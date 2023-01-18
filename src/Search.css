@@ -1,0 +1,36 @@
+/* POPUP */
+.popup {
+    /* centers popup absolutely */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid black;
+
+    background-color: #f7f7f7;
+    max-height: 60vh;
+    overflow: scroll;
+
+    /* display: flex; */
+}
+
+.songCard {
+    margin: 24px;
+}
+
+.songData {
+    display: flex;
+}
+
+.artistImg {
+    width: 120px;
+    height: 120px;
+    /* border-radius: 50%; */
+}
+
+.artistAndSong {
+    height: 100%;
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: space-between;
+}

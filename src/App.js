@@ -89,7 +89,7 @@ class App extends React.Component {
       const click2 = new Audio(click_2);
       click2.play();
       // if perMeasure is 0 (no accent click), limit to 10 beats
-      if (perMeasure == 0 && measure.length > 18){
+      if (perMeasure === 0 && measure.length > 18){
         temp = "☆ ";
       }
       else{
