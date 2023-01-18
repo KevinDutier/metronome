@@ -2,9 +2,6 @@ import React from "react";
 import { useState } from "react";
 import "./Search.css";
 
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-
 export default function Search(props) {
   const [artist, setArtist] = useState("");
   const [song, setSong] = useState("");
@@ -127,9 +124,9 @@ export default function Search(props) {
 
   return (
     <div className="searchContainer">
-      <p>Search for a song's BPM:</p>
+      <p className="searchFor" >Search for a song's BPM:</p>
       <input
-        // className={styles.searchBar}
+        className="searchBar"
         type="text"
         onChange={inputHandlerArtist}
         placeholder="Artist"
@@ -137,7 +134,7 @@ export default function Search(props) {
         maxLength="28"
       />
       <input
-        // className={styles.searchBar}
+        className="searchBar"
         type="text"
         onChange={inputHandlerSong}
         placeholder="Song"
@@ -148,6 +145,8 @@ export default function Search(props) {
         search
       </button>
 
+
+      {/* if popup is true, display popup with search results */}
       {popup && (
         <div className="popup">
           {results}
