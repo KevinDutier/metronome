@@ -198,10 +198,9 @@ class App extends React.Component {
     
 
     
-  // ++++++++++++++++ set song's bpm and time signature ++++++++++++++++ 
+  // ++++++++++++++++ set song's bpm ++++++++++++++++ 
   const setBpm = (bpm, timeSig) => {
-    
-    this.setState({bpm: bpm})
+    this.setState({bpm})
   }
 
     return (

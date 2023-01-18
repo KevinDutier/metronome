@@ -32,8 +32,8 @@ export default function Search(props) {
 
     // if user has typed artist and song, proceed
     if (artist.trim() && song.trim()) {
-      // user has typed in BOTH artist AND song
-      // search for song
+      // user has typed in artist and song
+      // search for song in the API's db
       const res = await fetch(
         `${process.env.REACT_APP_API_ADDRESS}/search/?api_key=${process.env.REACT_APP_API_KEY}&type=both&lookup=song:${song} artist:${artist}&limit=15`
       );
@@ -79,11 +79,10 @@ export default function Search(props) {
     }
   };
 
-  // called when user clicks on the song they chose
-  // fetches the song's bpm using the API's db
-  const handleSongClick = (song_id, time_sig) => {
-    props.onClickSong(song_id, time_sig); // passes song bpm and time signature to parent component (App.js)
-
+  // called when user clicks on a song
+  // passes song bpm and time signature to parent component
+  const handleSongClick = (tempo, time_sig) => {
+    props.onClickSong(tempo, time_sig); // passes song bpm and time signature to parent component (App.js)
     setPopup(false); // closes popup
   };
 
@@ -110,16 +109,17 @@ export default function Search(props) {
         search
       </button>
 
-      {/* if popup is true, display popup with search results */}
+      {/* if popup is true, display it with search results */}
       {popup && (
-        <div className="popup">
-          {/* <button onClick={() => setPopup(false)} className="closeButton">close</button> */}
-          <FontAwesomeIcon
-            icon={faCircleXmark}
-            className="closeButton"
-            onClick={() => setPopup(false)}
-          />
-          {results}
+        <div className="popupContainer">
+          <div className="popup">
+            <FontAwesomeIcon
+              icon={faCircleXmark}
+              className="closeButton"
+              onClick={() => setPopup(false)}
+              />
+            {results}
+          </div>
         </div>
       )}
     </div>

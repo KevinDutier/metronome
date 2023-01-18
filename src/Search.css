@@ -43,6 +43,18 @@
 }
 
 /* POPUP */
+
+/* popupContainer, which dims and blurs background when popup is open */
+.popupContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+}
+
 .popup {
   /* centers popup absolutely */
   position: absolute;
@@ -58,14 +70,17 @@
 }
 
 .closeButton {
-    color: #444444;
-    float: right;
-    position: sticky;
-    font-size: 22px;
-    top: 10px;
-    right: 10px;
-    margin-right: 8px;
-    cursor: pointer;
+  color: #444444;
+  float: right;
+  position: sticky;
+  font-size: 22px;
+  top: 10px;
+  right: 10px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.closeButton:hover {
+  color: #7a7a7a;
 }
 
 .songCard {
@@ -77,9 +92,9 @@
   cursor: pointer;
 }
 .songCard:hover {
-  border: 1px solid #2098D1;
-  background-color: #2098D1;
-    color: white;
+  border: 1px solid #2098d1;
+  background-color: #2098d1;
+  color: white;
 }
 
 .songData {
