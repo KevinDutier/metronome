@@ -222,12 +222,14 @@ class App extends React.Component {
           <div className="sliderContainer">
             <input
               type="image"
+              alt="minus"
               src={minusImg}
               className="plusMinus"
               onClick={() => this.plusMinus(-1)}
             />
             <input
               type="range"
+              alt="bpm"
               min="35"
               max="250"
               className="slider"
@@ -236,6 +238,7 @@ class App extends React.Component {
             />
             <input
               type="image"
+              alt="plus"
               src={plusImg}
               className="plusMinus"
               onClick={() => this.plusMinus(1)}

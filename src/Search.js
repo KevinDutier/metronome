@@ -60,7 +60,7 @@ export default function Search(props) {
                 }}
               >
                 <div className="songData">
-                  <img src={song.album.img} className="albumImg" />
+                  <img src={song.album.img} className="albumImg" alt="album" />
                   <div className="textData">
                     <p className="artist">{song.artist.name}</p>
                     <p className="title">{song.song_title}</p>
@@ -83,6 +83,8 @@ export default function Search(props) {
   // passes song bpm and time signature to parent component
   const handleSongClick = (tempo, time_sig) => {
     props.onClickSong(tempo, time_sig); // passes song bpm and time signature to parent component (App.js)
+    setArtist("");
+    setSong("");
     setPopup(false); // closes popup
   };
 
@@ -92,6 +94,7 @@ export default function Search(props) {
       <input
         className="searchBar"
         type="text"
+        value={artist}
         onChange={inputHandlerArtist}
         placeholder="Artist"
         minLength="1"
@@ -100,6 +103,7 @@ export default function Search(props) {
       <input
         className="searchBar"
         type="text"
+        value={song}
         onChange={inputHandlerSong}
         placeholder="Song"
         minLength="0"
