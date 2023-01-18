@@ -64,9 +64,9 @@
   border-radius: 8px;
 
   background-color: #c8d1d8;
-  max-height: 60vh;
+  max-height: 80vh;
   overflow-y: scroll;
-  min-width: 520px;
+  min-width: 70vw;
 }
 
 .closeButton {
