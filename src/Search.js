@@ -120,10 +120,9 @@ export default function Search(props) {
     );
     const response = await res.json();
 
-    // console.log(response.song.tempo);
-    // console.log(response.song.time_sig);
+    props.onClickSong(response.song.tempo, response.song.time_sig); // passes song bpm and time signature to parent component (App.js)
 
-    props.onClickSong(response.song.tempo, response.song.time_sig)
+    setPopup(false); // closes popup
   };
 
   return (

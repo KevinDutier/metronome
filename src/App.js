@@ -198,10 +198,10 @@ class App extends React.Component {
     
 
     
-  // ++++++++++++++++ get bpm and time signature ++++++++++++++++ 
-  const getData = (bpm, timeSig) => {
-    console.log(bpm)
-    console.log(timeSig)
+  // ++++++++++++++++ set song's bpm and time signature ++++++++++++++++ 
+  const setBpm = (bpm, timeSig) => {
+    
+    this.setState({bpm: bpm})
   }
 
     return (
@@ -238,7 +238,7 @@ class App extends React.Component {
         <span className = "measure">{measure}</span>
 
         <div>
-          <Search onClickSong={getData} />
+          <Search onClickSong={setBpm} />
         </div>
       </div>
 
