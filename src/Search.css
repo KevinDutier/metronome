@@ -37,8 +37,8 @@
   transition: color 100ms;
 }
 
-.button-1:hover,
-.button-1:focus {
+.button:hover,
+.button:focus {
   background-color: #f082ac;
 }
 
@@ -51,33 +51,67 @@
   transform: translate(-50%, -50%);
   border-radius: 8px;
 
-  background-color: #f7f7f7;
+  background-color: #c8d1d8;
   max-height: 60vh;
   overflow-y: scroll;
   min-width: 520px;
 }
 
 .songCard {
-  margin: 24px;
+  margin: 40px;
   min-width: 640px;
+  border: 1px solid #f1f1f1;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.songCard:hover {
+  border: 1px solid #2098D1;
+  background-color: #2098D1;
+    color: white;
 }
 
 .songData {
   display: flex;
+  margin: 30px 42px;
 }
 
-.artistImg {
+.albumImg {
   width: 300px;
   height: 300px;
-  /* border-radius: 50%; */
 }
 
-.artistAndSong {
+.textData {
   font: 1.4em Helvetica;
   height: 100%;
-  margin: 0px 22px;
+  margin: 0px 32px;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-around; */
   align-items: flex-start;
+}
+
+.artist {
+  margin: 12px 0px;
+  font: 1.6em Helvetica;
+}
+
+.title {
+  margin: 12px 0px;
+
+  font: 1.3em Helvetica;
+}
+
+.tempo {
+  margin: 12px 0px;
+  font: 1.2em Helvetica;
+}
+
+.key {
+  margin: 12px 0px;
+  font: 0.8em Helvetica;
+}
+
+.album {
+  margin: 12px 0px;
+  font: 0.8em Helvetica;
 }

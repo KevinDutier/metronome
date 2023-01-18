@@ -54,16 +54,17 @@ export default function Search(props) {
                 className="songCard"
                 key={i}
                 onClick={() => {
-                  handleSongClick(song.song_id);
+                  handleSongClick(song.tempo, song.time_sig);
                 }}
               >
                 <div className="songData">
-                  <img src={song.album.img} className="artistImg" />
-                  <div className="artistAndSong">
-                    <p>{song.artist.name}</p>
-                    <p>{song.song_title}</p>
-                    <p>Key: {song.key_of}</p>
-                    <p>Album: {song.album.title} ({song.album.year}) </p>
+                  <img src={song.album.img} className="albumImg" />
+                  <div className="textData">
+                    <p className="artist">{song.artist.name}</p>
+                    <p className="title">{song.song_title}</p>
+                    <p className="tempo">{song.tempo} bpm</p>
+                    <p className="key">Key: {song.key_of}</p>
+                    <p className="album">Album: {song.album.title} ({song.album.year}) </p>
                   </div>
                 </div>
               </div>
@@ -114,13 +115,8 @@ export default function Search(props) {
 
   // called when user clicks on the song they chose
   // fetches the song's bpm using the API's db
-  const handleSongClick = async (song_id) => {
-    const res = await fetch(
-      `${process.env.REACT_APP_API_ADDRESS}/song/?api_key=${process.env.REACT_APP_API_KEY}&id=${song_id}`
-    );
-    const response = await res.json();
-
-    props.onClickSong(response.song.tempo, response.song.time_sig); // passes song bpm and time signature to parent component (App.js)
+  const handleSongClick = (song_id, time_sig) => {
+    props.onClickSong(song_id, time_sig); // passes song bpm and time signature to parent component (App.js)
 
     setPopup(false); // closes popup
   };
