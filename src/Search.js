@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import './Search.css';
+import "./Search.css";
 
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -11,16 +11,17 @@ export default function Search() {
   const [popup, setPopup] = useState(false);
   const [results, setResults] = useState([]);
 
-  // sets artist name to text entered by user
+  // sets artist name to the text entered by user
   const inputHandlerArtist = (e) => {
     setArtist(e.target.value);
   };
 
-  // sets song name to text entered by user
+  // sets song name to the text entered by user
   const inputHandlerSong = (e) => {
     setSong(e.target.value);
   };
 
+  // called when user clicks on "search"
   const handleSearchClick = async () => {
     if (!song.trim()) {
       // if user has not typed in a song, do not proceed
@@ -32,13 +33,38 @@ export default function Search() {
 
     if (artist.trim() && song.trim()) {
       // user has typed in BOTH artist AND song
+      // search for song 
       const res = await fetch(
-        `https://api.getsongbpm.com/search/?api_key=${process.env.REACT_APP_API_KEY}&type=both&lookup=song:${song} artist:${artist}&limit=15`
+        `${process.env.REACT_APP_API_ADDRESS}/search/?api_key=${process.env.REACT_APP_API_KEY}&type=both&lookup=song:${song} artist:${artist}&limit=15`
       );
       const response = await res.json();
-      console.log(response);
 
-    //   setResults()
+      if (response) {
+        setPopup(true); // opens popup once response has been received
+
+        if (response.search.error) {
+          // no results found
+          setResults(<p>no results were found</p>);
+          return;
+        }
+
+        setResults(
+          response.search.map((song, i) => {
+            return (
+              <div className="songCard" key={i}>
+                <div className="songData">
+                  <img src={song.artist.img} className="artistImg" />
+                  <div className="artistAndSong">
+                    <p>artist: {song.artist.name}</p>
+                    <p>song: {song.song_title}</p>
+                    {/* <p>id: {song.song_id}</p> */}
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        );
+      }
     } else {
       // user has only typed in a song
       const res = await fetch(
@@ -46,45 +72,38 @@ export default function Search() {
       );
       const response = await res.json();
 
-    //   console.log(response.search[0].artist.name); // artist name
-    //   console.log(response.search[0].artist.img); // artist img
-    //   console.log(response.search[0].title); // song title
-    //   console.log(response.search[0].id); // song id
-
-    //   console.log(response.search.title);
-
       if (response) {
         setPopup(true); // opens popup once response has been received
 
         if (response.search.error) {
-            // no results found
-            setResults(<p>no results were found</p>);
-            return;
-        };
+          // no results found
+          setResults(<p>no results were found</p>);
+          return;
+        }
 
         setResults(
-            response.search.map((song, i) => {
-                return (
-                    <div className="songCard" key={i}>
-                        <div className="songData">
-                            <img src={song.artist.img} className="artistImg"/>
-                            <div className="artistAndSong">
-                                <p>artist: {song.artist.name}</p>
-                                <p>song: {song.title}</p>
-                                {/* <p>id: {song.id}</p> */}
-                            </div>
-                        </div>
-                    </div>
-                )
-            })
-        )
+          response.search.map((song, i) => {
+            return (
+              <div className="songCard" key={i}>
+                <div className="songData">
+                  <img src={song.artist.img} className="artistImg" />
+                  <div className="artistAndSong">
+                    <p>artist: {song.artist.name}</p>
+                    <p>song: {song.title}</p>
+                    {/* <p>id: {song.id}</p> */}
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        );
       }
     }
   };
 
   return (
     <div className="searchContainer">
-      <p>Search for a song BPM:</p>
+      <p>Search for a song's BPM:</p>
       <input
         // className={styles.searchBar}
         type="text"
