@@ -57,6 +57,17 @@
   min-width: 520px;
 }
 
+.closeButton {
+    color: #444444;
+    float: right;
+    position: sticky;
+    font-size: 22px;
+    top: 10px;
+    right: 10px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
 .songCard {
   margin: 40px;
   min-width: 640px;

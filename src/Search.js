@@ -2,6 +2,9 @@ import React from "react";
 import { useState } from "react";
 import "./Search.css";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+
 export default function Search(props) {
   const [artist, setArtist] = useState("");
   const [song, setSong] = useState("");
@@ -21,14 +24,13 @@ export default function Search(props) {
   // called when user clicks on "search"
   // searches for songs in the API's db using user input
   const handleSearchClick = async () => {
-    if (!song.trim()) {
+    if (!artist.trim() || !song.trim()) {
       // if user has not typed in a song, do not proceed
-      alert("You must type in a song");
+      alert("You must enter an artist and a song");
       return;
     }
 
-    // if user has at least typed in a song, proceed
-
+    // if user has typed artist and song, proceed
     if (artist.trim() && song.trim()) {
       // user has typed in BOTH artist AND song
       // search for song
@@ -64,45 +66,9 @@ export default function Search(props) {
                     <p className="title">{song.song_title}</p>
                     <p className="tempo">{song.tempo} bpm</p>
                     <p className="key">Key: {song.key_of}</p>
-                    <p className="album">Album: {song.album.title} ({song.album.year}) </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })
-        );
-      }
-    } else {
-      // user has only typed in a song
-      const res = await fetch(
-        `${process.env.REACT_APP_API_ADDRESS}/search/?api_key=${process.env.REACT_APP_API_KEY}&type=song&lookup=${song}&limit=15`
-      );
-      const response = await res.json();
-
-      if (response) {
-        setPopup(true); // opens popup once response has been received
-
-        if (response.search.error) {
-          // no results found
-          setResults(<p>no results were found</p>);
-          return;
-        }
-
-        setResults(
-          response.search.map((song, i) => {
-            return (
-              <div
-                className="songCard"
-                key={i}
-                onClick={() => {
-                  handleSongClick(song.id);
-                }}
-              >
-                <div className="songData">
-                  <img src={song.artist.img} className="artistImg" />
-                  <div className="artistAndSong">
-                    <p>artist: {song.artist.name}</p>
-                    <p>song: {song.title}</p>
+                    <p className="album">
+                      Album: {song.album.title} ({song.album.year}){" "}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -123,7 +89,7 @@ export default function Search(props) {
 
   return (
     <div className="searchContainer">
-      <p className="searchFor" >Search for a song's BPM:</p>
+      <p className="searchFor">Search for a song's BPM:</p>
       <input
         className="searchBar"
         type="text"
@@ -144,12 +110,16 @@ export default function Search(props) {
         search
       </button>
 
-
       {/* if popup is true, display popup with search results */}
       {popup && (
         <div className="popup">
+          {/* <button onClick={() => setPopup(false)} className="closeButton">close</button> */}
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            className="closeButton"
+            onClick={() => setPopup(false)}
+          />
           {results}
-          <button onClick={() => setPopup(false)}>close</button>
         </div>
       )}
     </div>
