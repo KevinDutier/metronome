@@ -46,6 +46,7 @@ export default function Search(props) {
           return;
         }
 
+        // results found
         setResults(
           response.search.map((song, i) => {
             return (
@@ -57,10 +58,12 @@ export default function Search(props) {
                 }}
               >
                 <div className="songData">
-                  <img src={song.artist.img} className="artistImg" />
+                  <img src={song.album.img} className="artistImg" />
                   <div className="artistAndSong">
-                    <p>artist: {song.artist.name}</p>
-                    <p>song: {song.song_title}</p>
+                    <p>{song.artist.name}</p>
+                    <p>{song.song_title}</p>
+                    <p>Key: {song.key_of}</p>
+                    <p>Album: {song.album.title} ({song.album.year}) </p>
                   </div>
                 </div>
               </div>
