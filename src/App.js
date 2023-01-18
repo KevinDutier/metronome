@@ -1,5 +1,5 @@
 import React from "react";
-import './App.css';
+import "./App.css";
 import Search from "./Search";
 
 import click_1 from "./1_metronome.wav";
@@ -12,7 +12,7 @@ import minusImg from "./buttons/minus.svg";
 import plusImg from "./buttons/plus.svg";
 
 class App extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       // metronome
@@ -24,33 +24,34 @@ class App extends React.Component {
       calculating: false,
       times: [],
       measure: "",
+      bpmSetMessage: null,
     };
-  };
-
-
-
+  }
 
   // explanation for arrow notation instead of using bind: https://stackoverflow.com/questions/35287949/react-with-es7-uncaught-typeerror-cannot-read-property-state-of-undefined/35287996
   // BPM slider onChange handler
-  changeBpm = event => {
+  changeBpm = (event) => {
     const bpm = event.target.value;
-    this.setState({
-      bpm: bpm,
-      currentBeat: 0,
-    }, this.resetPlay); // resetPlay happens only after state is updates
-  }
+    this.setState(
+      {
+        bpm: bpm,
+        currentBeat: 0,
+      },
+      this.resetPlay
+    ); // resetPlay happens only after state is updates
+  };
 
   // time signature select onChange handler
-  selectChange = event => {
-    this.setState({perMeasure: event.target.value});
+  selectChange = (event) => {
+    this.setState({ perMeasure: event.target.value });
     this.resetPlay();
-  }
+  };
 
   // onClick play/pause button handler
-  playPause(){
-    const {active, bpm} = this.state;
+  playPause() {
+    const { active, bpm } = this.state;
     // pause
-    if(active){
+    if (active) {
       clearInterval(this.interval);
       this.setState({
         active: false,
@@ -59,7 +60,7 @@ class App extends React.Component {
       });
     }
     // play
-    else{
+    else {
       this.setState({
         active: true,
         currentBeat: 0,
@@ -67,13 +68,13 @@ class App extends React.Component {
       });
       this.interval = setInterval(() => {
         this.playClick();
-      }, ((60/bpm)*1000));
+      }, (60 / bpm) * 1000);
     }
   }
 
   // play appropriate click sound and display visual representation through star symbols
-  playClick(){
-    const {perMeasure, currentBeat, measure} = this.state;
+  playClick() {
+    const { perMeasure, currentBeat, measure } = this.state;
     let temp = "";
     // if 1st beat of measure, play click 1, otherwise click 2
     if (currentBeat % perMeasure === 0) {
@@ -81,21 +82,18 @@ class App extends React.Component {
       const click1 = new Audio(click_1);
       click1.play();
       // if two measures displayed, reset measures
-      if (currentBeat % (perMeasure*2) === 0) {
+      if (currentBeat % (perMeasure * 2) === 0) {
         temp = "★ ";
-      }
-      else{
+      } else {
         temp = measure + "★ ";
       }
-    }
-    else{
+    } else {
       const click2 = new Audio(click_2);
       click2.play();
       // if perMeasure is 0 (no accent click), limit to 10 beats
-      if (perMeasure === 0 && measure.length > 18){
+      if (perMeasure === 0 && measure.length > 18) {
         temp = "☆ ";
-      }
-      else{
+      } else {
         temp = measure + "☆ ";
       }
     }
@@ -108,18 +106,18 @@ class App extends React.Component {
   }
 
   // determine BPM from user clicking the button in rhythm
-  setBpm(){
+  setBpm() {
     // play sound when button is pressed
     this.playClick();
     // get time
     const date = new Date();
     const time = date.getTime();
     // append time to times array
-    const {times, perMeasure} = this.state;
+    const { times, perMeasure } = this.state;
     let newTimes = times;
     newTimes.push(time);
     // get last N number of elements where N is time signature (so user can adjust & average isn't skewed)
-    newTimes = newTimes.slice((perMeasure * 2) * -1);
+    newTimes = newTimes.slice(perMeasure * 2 * -1);
     this.setState({
       // calculating status for colour of BPM value ot let user know when its changeable
       calculating: true,
@@ -131,10 +129,10 @@ class App extends React.Component {
   }
 
   // check if it's been 2 seconds since user last clicked "setBPM" button
-  checkTimeout(time){
-    const {active, times} = this.state;
+  checkTimeout(time) {
+    const { active, times } = this.state;
     let lastTime = times.at(-1);
-    if(time === lastTime){
+    if (time === lastTime) {
       // 2 seconds passed = time out
       this.setState({
         // allows to change color of BPM back to black
@@ -144,103 +142,150 @@ class App extends React.Component {
       });
       // if active, don't need to reset beat and measure after 2 seconds (as playPause resets locally)
       // else, reset current beat
-      if(!active){
+      if (!active) {
         this.setState({
           currentBeat: 0,
           measure: "",
         });
       }
-
     }
   }
 
   // calculate BPM from times values
-  calculateBPM(){
-    const {times} = this.state;
-    if (times.length > 1){
+  calculateBPM() {
+    const { times } = this.state;
+    if (times.length > 1) {
       let sumOfGaps = 0;
-      for (let i = 1; i < times.length; i++){
-        sumOfGaps = sumOfGaps + (times[i] - times[i-1]);
+      for (let i = 1; i < times.length; i++) {
+        sumOfGaps = sumOfGaps + (times[i] - times[i - 1]);
       }
-      let average = sumOfGaps/(times.length-1)
-      let bpm = Math.round((1000/average)*60);
+      let average = sumOfGaps / (times.length - 1);
+      let bpm = Math.round((1000 / average) * 60);
       // don't go over min/max boundaries
-      if(bpm > 250){bpm = 250;}
-      if(bpm < 35){bpm = 35;}
-      this.setState({bpm: bpm});
+      if (bpm > 250) {
+        bpm = 250;
+      }
+      if (bpm < 35) {
+        bpm = 35;
+      }
+      this.setState({ bpm: bpm });
     }
   }
 
   // plus/minus onClick event handler to adjust BPM
-  plusMinus(x){
-    const {bpm} = this.state;
+  plusMinus(x) {
+    const { bpm } = this.state;
     let temp = parseInt(bpm) + x; //parseInt as bpm becomes string from slider
     // don't go over min/max boundaries
-    if(temp > 250){temp = 250;}
-    if(temp < 35){temp = 35;}
-    this.setState({bpm: temp});
+    if (temp > 250) {
+      temp = 250;
+    }
+    if (temp < 35) {
+      temp = 35;
+    }
+    this.setState({ bpm: temp });
     this.resetPlay();
   }
 
-  resetPlay(){
-    const {active, bpm} = this.state;
-    if(active){
+  resetPlay() {
+    const { active, bpm } = this.state;
+    if (active) {
       // stop current interval, start a new one
       clearInterval(this.interval);
       this.interval = setInterval(() => {
         this.playClick();
-      }, ((60/bpm)*1000));
+      }, (60 / bpm) * 1000);
     }
   }
 
-  render(){
-    const {active, bpm, perMeasure, calculating, measure} = this.state;
-    
+  render() {
+    const { active, bpm, perMeasure, calculating, measure, bpmSetMessage } =
+      this.state;
 
-    
-  // ++++++++++++++++ set song's bpm ++++++++++++++++ 
-  const setBpm = (bpm, timeSig) => {
-    this.setState({bpm})
-  }
+    // ++++++++++++++++ set song's bpm ++++++++++++++++
+    const setBpm = (bpm, timeSig) => {
+      this.setState({ bpm }); // sets bpm to user-chosen song's bpm
+      this.setState({ bpmSetMessage: "bpm set to " + bpm }); // displays message confirming bpm has been set 
+
+      setTimeout(() => {
+        this.setState({ bpmSetMessage: null }); // removes message after 2 seconds
+      }, 2000);
+    };
 
     return (
-      <div className = "metronome">
-        <div className = "bpm">
-          <div><span className = {calculating ? "activeBPM" : null}>{bpm}</span> BPM</div>
-          <div className = "sliderContainer">
-            <input type="image" src={minusImg} className = "plusMinus" onClick = {() => this.plusMinus(-1)}/>
-            <input type = "range" min = "35" max = "250" className = "slider" value = {bpm} onChange = {this.changeBpm}/>
-            <input type="image" src={plusImg} className = "plusMinus" onClick = {() => this.plusMinus(1)}/>
+      <div className="metronome">
+        <div className="bpm">
+          <span className="bpmSetMessage">{bpmSetMessage}</span>
+          <div>
+            <span className={calculating ? "activeBPM" : null}>{bpm}</span> BPM
+          </div>
+          <div className="sliderContainer">
+            <input
+              type="image"
+              src={minusImg}
+              className="plusMinus"
+              onClick={() => this.plusMinus(-1)}
+            />
+            <input
+              type="range"
+              min="35"
+              max="250"
+              className="slider"
+              value={bpm}
+              onChange={this.changeBpm}
+            />
+            <input
+              type="image"
+              src={plusImg}
+              className="plusMinus"
+              onClick={() => this.plusMinus(1)}
+            />
           </div>
         </div>
-        <div className = "buttons">
-          <input type="image" src={active ? pauseImg : playImg} className = "circleButton" onClick = {() => this.playPause()} alt={active ? "pause button" : "play button"}/>
-          <input type="image" src={active ? recordDisabledImg: recordImg} className = "circleButton" disabled={active} onClick = {() => this.setBpm()} alt="set BPM button"/>
+        <div className="buttons">
+          <input
+            type="image"
+            src={active ? pauseImg : playImg}
+            className="circleButton"
+            onClick={() => this.playPause()}
+            alt={active ? "pause button" : "play button"}
+          />
+          <input
+            type="image"
+            src={active ? recordDisabledImg : recordImg}
+            className="circleButton"
+            disabled={active}
+            onClick={() => this.setBpm()}
+            alt="set BPM button"
+          />
         </div>
-        <div className = "timeSignature">
+        <div className="timeSignature">
           Beats per measure: &nbsp;
-          <select className = "selectStyle" onChange = {this.selectChange} value = {perMeasure}>
-            <option value = "0">N/A</option>
-            <option value = "2">2</option>
-            <option value = "3">3</option>
-            <option value = "4">4</option>
-            <option value = "5">5</option>
-            <option value = "6">6</option>
-            <option value = "7">7</option>
-            <option value = "8">8</option>
-            <option value = "9">9</option>
-            <option value = "10">10</option>
-            <option value = "11">11</option>
-            <option value = "12">12</option>
+          <select
+            className="selectStyle"
+            onChange={this.selectChange}
+            value={perMeasure}
+          >
+            <option value="0">N/A</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
           </select>
         </div>
-        <span className = "measure">{measure}</span>
+        <span className="measure">{measure}</span>
 
         <div>
           <Search onClickSong={setBpm} />
         </div>
       </div>
-
     );
   }
 }

@@ -50,6 +50,11 @@ body{
   font: 2.2em Helvetica;
 }
 
+.bpmSetMessage {
+  font: 0.8em Helvetica;
+  color: #ea4c89;
+}
+
 .activeBPM{
   color: #679c5c;
 }
