@@ -21,6 +21,10 @@ export default function Search() {
     setSong(e.target.value);
   };
 
+  const handleSongClick = (song_id) => {
+    console.log(song_id)
+  }
+
   // called when user clicks on "search"
   const handleSearchClick = async () => {
     if (!song.trim()) {
@@ -51,13 +55,12 @@ export default function Search() {
         setResults(
           response.search.map((song, i) => {
             return (
-              <div className="songCard" key={i}>
+              <div className="songCard" key={i} onClick={() => {handleSongClick(song.song_id)}}>
                 <div className="songData">
                   <img src={song.artist.img} className="artistImg" />
                   <div className="artistAndSong">
                     <p>artist: {song.artist.name}</p>
                     <p>song: {song.song_title}</p>
-                    {/* <p>id: {song.song_id}</p> */}
                   </div>
                 </div>
               </div>
@@ -84,7 +87,7 @@ export default function Search() {
         setResults(
           response.search.map((song, i) => {
             return (
-              <div className="songCard" key={i}>
+              <div className="songCard" key={i} onClick={() => {handleSongClick()}}>
                 <div className="songData">
                   <img src={song.artist.img} className="artistImg" />
                   <div className="artistAndSong">
@@ -126,25 +129,10 @@ export default function Search() {
 
       {popup && (
         <div className="popup">
-          {/* <div className="popup_inner">
-            <h1>results</h1>
-            <button onClick={() => setPopup(false)}>close me</button>
-          </div> */}
           {results}
           <button onClick={() => setPopup(false)}>close</button>
         </div>
       )}
-
-      {/* <Popup
-        trigger={
-          <button className="button" type="button" onClick={handleSearchClick}>
-            search
-          </button>
-        }
-        position="right center"
-      >
-        <div>Popup content here !!</div>
-      </Popup> */}
     </div>
   );
 }
