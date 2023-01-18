@@ -21,6 +21,13 @@ export default function Search(props) {
     setSong(e.target.value);
   };
 
+  // launches search if user presses enter
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearchClick();
+    }
+  };
+
   // called when user clicks on "search"
   // searches for songs in the API's db using user input
   const handleSearchClick = async () => {
@@ -96,6 +103,7 @@ export default function Search(props) {
         type="text"
         value={artist}
         onChange={inputHandlerArtist}
+        onKeyDown={handleKeyDown}
         placeholder="Artist"
         minLength="1"
         maxLength="28"
@@ -105,6 +113,7 @@ export default function Search(props) {
         type="text"
         value={song}
         onChange={inputHandlerSong}
+        onKeyDown={handleKeyDown}
         placeholder="Song"
         minLength="0"
         maxLength="28"
