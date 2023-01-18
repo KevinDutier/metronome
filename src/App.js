@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import './App.css';
+import Search from "./Search";
 
 import click_1 from "./1_metronome.wav";
 import click_2 from "./2_metronome.wav";
@@ -25,6 +26,8 @@ class App extends React.Component {
       measure: "",
     };
   };
+
+
 
 
   // explanation for arrow notation instead of using bind: https://stackoverflow.com/questions/35287949/react-with-es7-uncaught-typeerror-cannot-read-property-state-of-undefined/35287996
@@ -192,6 +195,15 @@ class App extends React.Component {
 
   render(){
     const {active, bpm, perMeasure, calculating, measure} = this.state;
+    
+
+    
+  // ++++++++++++++++ get bpm and time signature ++++++++++++++++ 
+  const getData = (bpm, timeSig) => {
+    console.log(bpm)
+    console.log(timeSig)
+  }
+
     return (
       <div className = "metronome">
         <div className = "bpm">
@@ -224,7 +236,12 @@ class App extends React.Component {
           </select>
         </div>
         <span className = "measure">{measure}</span>
+
+        <div>
+          <Search onClickSong={getData} />
+        </div>
       </div>
+
     );
   }
 }

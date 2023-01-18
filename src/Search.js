@@ -5,7 +5,7 @@ import "./Search.css";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-export default function Search() {
+export default function Search(props) {
   const [artist, setArtist] = useState("");
   const [song, setSong] = useState("");
   const [popup, setPopup] = useState(false);
@@ -21,11 +21,8 @@ export default function Search() {
     setSong(e.target.value);
   };
 
-  const handleSongClick = (song_id) => {
-    console.log(song_id)
-  }
-
   // called when user clicks on "search"
+  // searches for songs in the API's db using user input
   const handleSearchClick = async () => {
     if (!song.trim()) {
       // if user has not typed in a song, do not proceed
@@ -37,7 +34,7 @@ export default function Search() {
 
     if (artist.trim() && song.trim()) {
       // user has typed in BOTH artist AND song
-      // search for song 
+      // search for song
       const res = await fetch(
         `${process.env.REACT_APP_API_ADDRESS}/search/?api_key=${process.env.REACT_APP_API_KEY}&type=both&lookup=song:${song} artist:${artist}&limit=15`
       );
@@ -55,7 +52,13 @@ export default function Search() {
         setResults(
           response.search.map((song, i) => {
             return (
-              <div className="songCard" key={i} onClick={() => {handleSongClick(song.song_id)}}>
+              <div
+                className="songCard"
+                key={i}
+                onClick={() => {
+                  handleSongClick(song.song_id);
+                }}
+              >
                 <div className="songData">
                   <img src={song.artist.img} className="artistImg" />
                   <div className="artistAndSong">
@@ -71,7 +74,7 @@ export default function Search() {
     } else {
       // user has only typed in a song
       const res = await fetch(
-        `https://api.getsongbpm.com/search/?api_key=${process.env.REACT_APP_API_KEY}&type=song&lookup=${song}&limit=15`
+        `${process.env.REACT_APP_API_ADDRESS}/search/?api_key=${process.env.REACT_APP_API_KEY}&type=song&lookup=${song}&limit=15`
       );
       const response = await res.json();
 
@@ -87,13 +90,18 @@ export default function Search() {
         setResults(
           response.search.map((song, i) => {
             return (
-              <div className="songCard" key={i} onClick={() => {handleSongClick()}}>
+              <div
+                className="songCard"
+                key={i}
+                onClick={() => {
+                  handleSongClick(song.id);
+                }}
+              >
                 <div className="songData">
                   <img src={song.artist.img} className="artistImg" />
                   <div className="artistAndSong">
                     <p>artist: {song.artist.name}</p>
                     <p>song: {song.title}</p>
-                    {/* <p>id: {song.id}</p> */}
                   </div>
                 </div>
               </div>
@@ -102,6 +110,20 @@ export default function Search() {
         );
       }
     }
+  };
+
+  // called when user clicks on the song they chose
+  // fetches the song's bpm using the API's db
+  const handleSongClick = async (song_id) => {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_ADDRESS}/song/?api_key=${process.env.REACT_APP_API_KEY}&id=${song_id}`
+    );
+    const response = await res.json();
+
+    // console.log(response.song.tempo);
+    // console.log(response.song.time_sig);
+
+    props.onClickSong(response.song.tempo, response.song.time_sig)
   };
 
   return (
